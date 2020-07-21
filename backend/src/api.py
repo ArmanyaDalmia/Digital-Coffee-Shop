@@ -42,13 +42,27 @@ def get_drinks():
 
 
 '''
-@TODO implement endpoint
+@ implement endpoint
     GET /drinks-detail
         it should require the 'get:drinks-detail' permission
         it should contain the drink.long() data representation
     returns status code 200 and json {"success": True, "drinks": drinks} where drinks is the list of drinks
         or appropriate status code indicating reason for failure
 '''
+@app.route('/drinks-detail')
+@requires_auth('get:drinks-detail')
+def get_drinks_detail(token):
+
+    drinks = Drink.query.all()
+
+    try:
+        return jsonify({
+            "success": True,
+            "drinks": [drink.long() for drink in drinks]
+        })
+    except:
+        abort(404)
+
 
 
 '''

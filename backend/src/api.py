@@ -168,6 +168,19 @@ def delete_drink(id):
 
 
 ## Error Handling
+
+
+'''
+@ implement error handlers using the @app.errorhandler(error) decorator
+    each error handler should return (with approprate messages):
+             jsonify({
+                    "success": False, 
+                    "error": 404,
+                    "message": "resource not found"
+                    }), 404
+
+'''
+
 '''
 Example error handling for unprocessable entity
 '''
@@ -178,17 +191,6 @@ def unprocessable(error):
         "error": 422,
         "message": "unprocessable"
     }), 422
-
-'''
-@TODO implement error handlers using the @app.errorhandler(error) decorator
-    each error handler should return (with approprate messages):
-             jsonify({
-                    "success": False, 
-                    "error": 404,
-                    "message": "resource not found"
-                    }), 404
-
-'''
 
 '''
 @ implement error handler for 404
@@ -203,6 +205,21 @@ def resource_not_found(error):
         "message": "resource not found"
     }), 404
 
+@app.errorhandler(401)
+def unauthorized(error):
+    return jsonify({
+        "success": False,
+        "error": 401,
+        "message": 'unauthorized'
+    }), 401
+
+@app.errorhandler(500)
+def internal_server_error(error):
+    return jsonify({
+        "success": False,
+        "error": 500,
+        "message": 'internal server error'
+    }), 500
 
 '''
 @ implement error handler for AuthError

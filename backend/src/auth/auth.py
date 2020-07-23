@@ -68,7 +68,7 @@ def get_token_auth_header():
 
 
 '''
-@TODO implement check_permissions(permission, payload) method
+@ implement check_permissions(permission, payload) method
     @INPUTS
         permission: string permission (i.e. 'post:drink')
         payload: decoded jwt payload
@@ -79,7 +79,20 @@ def get_token_auth_header():
     return true otherwise
 '''
 def check_permissions(permission, payload):
-    raise Exception('Not Implemented')
+
+    if 'permissions' not in payload:
+        raise AuthError({
+            'code': 'invalid_claims',
+            'description': 'Permissions not included in JWT.'
+        }, 400)
+
+    if permission not in payload['permissions']:
+        raise AuthError({
+            'code': 'unauthorized',
+            'description': 'Permission not found.'
+        }, 403)
+        
+    return True
 
 
 
@@ -153,7 +166,7 @@ def verify_decode_jwt(token):
 
 
 '''
-@TODO implement @requires_auth(permission) decorator method
+@ implement @requires_auth(permission) decorator method
     @INPUTS
         permission: string permission (i.e. 'post:drink')
 

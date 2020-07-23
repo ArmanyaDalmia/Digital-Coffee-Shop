@@ -66,7 +66,7 @@ def get_drinks_detail(token):
 
 
 '''
-@TODO implement endpoint
+@ implement endpoint
     POST /drinks
         it should create a new row in the drinks table
         it should require the 'post:drinks' permission
@@ -74,7 +74,26 @@ def get_drinks_detail(token):
     returns status code 200 and json {"success": True, "drinks": drink} where drink an array containing only the newly created drink
         or appropriate status code indicating reason for failure
 '''
+@app.route('/drinks', methods=['POST'])
+@requires_auth('post:drinks')
+def create_drinks(token):
 
+    try:
+
+        body = request.get_json()
+
+        new_title = body.get('title', None)
+        new_recipe = body.get('recipe', None)
+
+        drink = Drink(title=new_title, recipe=json.dumps(new_recipe))
+        drink.insert()
+
+        return jsonify({
+            "success": True,
+            "drinks": drink.long()
+        })
+    except:
+        abort(422)
 
 '''
 @TODO implement endpoint

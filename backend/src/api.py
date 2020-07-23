@@ -110,30 +110,30 @@ def create_drinks(token):
 @requires_auth('patch:drinks')
 def update_drinks(token, id):
 
+    drink = Drink.query.filter(Drink.id == id).one_or_none()
+    if drink is None:
+        abort(404)
+
+    try:
         body = request.get_json()
 
-        try:
-            drink = Drink.query.filter(Drink.id == id).one_or_none()
-            if drink is None:
-                abort(404)
+        drink_title = body.get('title')
+        drink_recipe = body.get('recipe')
 
-            drink_title = body.get('title', None)
-            drink_recipe = body.get('recipe', None)
+        if drink_title:
+            drink.title = drink_title
+        if drink_recipe:
+            drink.recipe = json.dumps(drink_recipe)
 
-            if drink_title:
-                drink.title = drink_title
-            if drink_recipe:
-                drink.recipe = drink_recipe
+        drink.update()
 
-            drink.update()
+        return jsonify({
+            'success': True,
+            'drinks': [drink.long()]
+        })
 
-            return jsonify({
-                'success': True,
-                'drinks': [drink.long()]
-            })
-
-        except:
-            abort(422)
+    except:
+        abort(422)
 
 '''
 @ implement endpoint

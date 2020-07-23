@@ -96,7 +96,6 @@ def create_drinks(token):
         abort(422)
 
 '''
-@TODO implement endpoint
 @ implement endpoint
     PATCH /drinks/<id>
         where <id> is the existing model id
@@ -149,7 +148,7 @@ def update_drinks(token, id):
 
 @app.route('/drinks/<id>', methods=['DELETE'])
 @requires_auth('delete:drinks')
-def delete_drink(id):
+def delete_drink(token, id):
     try:
         drink = Drink.query.filter(Drink.id == id).one_or_none()
 

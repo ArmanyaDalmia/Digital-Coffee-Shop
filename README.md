@@ -1,4 +1,4 @@
-# Digital Coffee Shop
+# Digital Coffee-Shop
 
 ## Full Stack Nano - IAM Final Project
 
